@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111216">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>SportTrack</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-icon">🏋️</span><span>Sport<span class="red">Track</span></span></div>
+    <button class="icon-btn" id="settingsBtn" aria-label="Paramètres">⚙</button>
+  </header>
+
+  <nav class="tabs" aria-label="Navigation">
+    <button class="tab active" data-page="home">⌂<small>Accueil</small></button>
+    <button class="tab" data-page="nutrition">🥗<small>Nutrition</small></button>
+    <button class="tab" data-page="training">🏋️<small>Entraînement</small></button>
+    <button class="tab" data-page="stats">▥<small>Stats</small></button>
+  </nav>
+
+  <main>
+    <section class="page active" id="page-home">
+      <div class="heading-row"><div><p class="eyebrow">TON ESPACE</p><h1>Aujourd'hui</h1></div><span class="date-pill" id="todayLabel"></span></div>
+      <article class="panel nutrition-summary">
+        <div class="panel-title"><h2>Nutrition du jour</h2><button class="text-btn" data-go="nutrition">Détails →</button></div>
+        <div class="calorie-line"><div><span class="muted">Énergie consommée</span><strong id="homeKcal">0 kcal</strong></div><div class="ring" id="homeRing"><span id="homeProtein">0 g</span><small>protéines</small></div></div>
+        <div class="macro-grid">
+          <div><span class="macro-dot blue"></span><span>Protéines</span><b id="homeP">0 g</b></div>
+          <div><span class="macro-dot yellow"></span><span>Glucides</span><b id="homeC">0 g</b></div>
+          <div><span class="macro-dot purple"></span><span>Lipides</span><b id="homeF">0 g</b></div>
+        </div>
+      </article>
+      <div class="two-cards">
+        <article class="panel mini-panel"><span class="mini-icon">🏋️</span><p class="muted">Séances enregistrées</p><strong id="homeSessions">0</strong><small>au total</small></article>
+        <article class="panel mini-panel"><span class="mini-icon">🏃</span><p class="muted">Activités cardio</p><strong id="homeCardio">0</strong><small>enregistrées</small></article>
+      </div>
+      <article class="panel">
+        <div class="panel-title"><h2>Derniers entraînements</h2><button class="text-btn" data-go="training">Voir tout →</button></div>
+        <div id="homeWorkouts" class="empty">Aucune séance enregistrée pour le moment.</div>
+      </article>
+      <article class="panel">
+        <div class="panel-title"><h2>Derniers aliments</h2><button class="text-btn" data-go="nutrition">Ajouter →</button></div>
+        <div id="homeFoods" class="empty">Aucun aliment enregistré aujourd'hui.</div>
+      </article>
+    </section>
+
+    <section class="page" id="page-nutrition">
+      <div class="heading-row"><div><p class="eyebrow">ALIMENTATION</p><h1>Nutrition</h1></div><span class="date-pill" id="nutritionDate"></span></div>
+      <article class="panel">
+        <div class="panel-title"><h2>Mon journal alimentaire</h2><span class="tag">Estimations</span></div>
+        <div class="nutrition-total"><strong id="totalKcal">0</strong><span>kcal consommées</span></div>
+        <div class="macro-grid large">
+          <div><span class="macro-dot blue"></span><span>Protéines</span><b id="totalP">0 g</b></div>
+          <div><span class="macro-dot yellow"></span><span>Glucides</span><b id="totalC">0 g</b></div>
+          <div><span class="macro-dot purple"></span><span>Lipides</span><b id="totalF">0 g</b></div>
+        </div>
+        <p class="hint">Les valeurs sont approximatives : elles varient selon la marque, la recette et la cuisson.</p>
+      </article>
+      <article class="panel">
+        <div class="panel-title"><h2>Ajouter un aliment</h2><span class="tag">Bibliothèque</span></div>
+        <label class="field-label" for="foodSearch">Rechercher un aliment</label>
+        <input id="foodSearch" class="field" placeholder="Ex. jambon, œuf, pâtes…">
+        <div id="foodLibrary" class="food-library"></div>
+        <div class="form-grid">
+          <label>Quantité <input id="foodAmount" class="field" type="number" min="1" value="100"></label>
+          <label>Unité
+            <select id="foodUnit" class="field"><option value="g">grammes</option><option value="portion">portion(s)</option></select>
+          </label>
+        </div>
+        <p class="selected-food" id="selectedFood">Choisis un aliment dans la liste.</p>
+        <button class="primary full" id="addFoodBtn" disabled>＋ Ajouter au journal</button>
+      </article>
+      <article class="panel">
+        <div class="panel-title"><h2>Repas enregistrés</h2><button class="text-btn" id="clearFoodsBtn">Vider la journée</button></div>
+        <div id="foodLog" class="stack empty">Aucun aliment pour le moment.</div>
+      </article>
+      <article class="panel">
+        <div class="panel-title"><h2>Mes repas favoris</h2></div>
+        <p class="hint">Enregistre une combinaison d'aliments pour la retrouver rapidement.</p>
+        <div class="form-grid">
+          <input id="mealName" class="field" placeholder="Nom du repas">
+          <button class="secondary" id="saveMealBtn">Enregistrer le repas du jour</button>
+        </div>
+        <div id="savedMeals" class="stack empty">Aucun repas favori.</div>
+      </article>
+    </section>
+
+    <section class="page" id="page-training">
+      <div class="heading-row"><div><p class="eyebrow">APRÈS TA SÉANCE</p><h1>Entraînement</h1></div></div>
+      <article class="panel accent-panel">
+        <h2>Tu as terminé ta séance ?</h2>
+        <p>Renseigne tranquillement les exercices, séries, répétitions et charges après l'entraînement. Aucun suivi en direct.</p>
+      </article>
+      <article class="panel">
+        <div class="panel-title"><h2>Enregistrer une séance</h2><span class="tag">Saisie manuelle</span></div>
+        <label class="field-label">Nom de la séance</label><input id="workoutName" class="field" placeholder="Ex. Pecs + triceps">
+        <label class="field-label">Date</label><input id="workoutDate" class="field" type="date">
+        <div class="divider"></div>
+        <div class="panel-title"><h3>Exercices</h3><button class="text-btn" id="addExerciseBtn">＋ Ajouter</button></div>
+        <div id="exerciseBuilder" class="stack"></div>
+        <button class="primary full" id="saveWorkoutBtn">Enregistrer la séance</button>
+      </article>
+      <article class="panel">
+        <div class="panel-title"><h2>Historique des séances</h2></div>
+        <div id="workoutHistory" class="stack empty">Aucune séance enregistrée.</div>
+      </article>
+      <article class="panel">
+        <div class="panel-title"><h2>Ajouter une activité cardio</h2></div>
+        <div class="form-grid">
+          <label>Activité<input id="cardioType" class="field" placeholder="Course, vélo, marche…"></label>
+          <label>Durée (min)<input id="cardioDuration" class="field" type="number" min="1" placeholder="30"></label>
+        </div>
+        <label class="field-label">Date</label><input id="cardioDate" class="field" type="date">
+        <button class="secondary full" id="saveCardioBtn">＋ Enregistrer le cardio</button>
+        <div id="cardioHistory" class="stack"></div>
+        <p class="hint">Les calories dépensées pendant une activité ne sont pas calculées automatiquement : les estimations varient beaucoup selon la personne et l'intensité.</p>
+      </article>
+    </section>
+
+    <section class="page" id="page-stats">
+      <div class="heading-row"><div><p class="eyebrow">TON ÉVOLUTION</p><h1>Statistiques</h1></div></div>
+      <div class="stats-grid">
+        <article class="panel"><span class="muted">Séances</span><strong id="statWorkouts">0</strong><small>enregistrées</small></article>
+        <article class="panel"><span class="muted">Exercices</span><strong id="statExercises">0</strong><small>au total</small></article>
+        <article class="panel"><span class="muted">Cardio</span><strong id="statMinutes">0 min</strong><small>enregistrées</small></article>
+        <article class="panel"><span class="muted">Aliments</span><strong id="statFoods">0</strong><small>aujourd'hui</small></article>
+      </div>
+      <article class="panel"><h2>Dernières performances</h2><div id="performanceList" class="stack empty">Enregistre une séance pour voir tes performances ici.</div></article>
+      <article class="panel"><h2>Calories : comprendre les chiffres</h2><p class="hint">L'application additionne l'énergie estimée des aliments. Elle ne prétend pas mesurer exactement les calories dépensées par ton corps. Ces chiffres sont des repères approximatifs, pas des objectifs à atteindre.</p></article>
+    </section>
+
+    <section class="page" id="page-settings">
+      <div class="heading-row"><div><p class="eyebrow">PERSONNALISATION</p><h1>Paramètres</h1></div></div>
+      <article class="panel"><h2>Données</h2><p class="hint">Tes informations restent enregistrées dans le navigateur de cet appareil.</p><div class="button-row"><button class="secondary" id="exportBtn">Exporter mes données</button><label class="secondary import-label">Importer<input type="file" id="importFile" accept="application/json" hidden></label></div></article>
+      <article class="panel"><h2>À propos</h2><p class="hint">SportTrack est un carnet personnel de nutrition et d'entraînement. Les valeurs alimentaires sont indicatives et ne remplacent pas un avis professionnel.</p></article>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
